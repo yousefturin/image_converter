@@ -225,6 +225,36 @@ body {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
+.info_container{
+    height: 40%;
+    width: 100%;
+    color: #00203F;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+}
+.wrap_info_container{
+    width: 65%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 200px;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    row-gap: 5px ;
+    column-gap: 20px;
+}
+.wrap_info_container span{
+    font-size: 140px;
+}
+.wrap_info_container p{
+    font-size: 12px;
+}
 .footer {
     width: 100%;
     height: 15%;

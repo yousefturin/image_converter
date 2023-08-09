@@ -8,6 +8,15 @@
     "{{ url_for('static', filename='styles/style.css') }}">
     <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 48
+        }
+        </style>
 </head>
 <body>
     <div class="container">
@@ -46,6 +55,34 @@
                     </div>
                     </form>
                     
+            </div>
+        </div>
+        <div class="info_container">
+            <div class="wrap_info_container">
+                <div class="left_top_info_container">
+                    <span class="material-symbols-outlined">
+                        shield_lock
+                        </span>
+                        <p>The image data transfer is encrypted to provide the highest possible level of security.</p>
+                </div>
+                <div class="right_top_info_container">
+                    <span class="material-symbols-outlined">
+                        manage_accounts
+                        </span>
+                        <p>With our service, you are able to redownload all of your images conversion history.</p>
+                </div>
+                <div class="bottom_left_info_container">
+                    <span class="material-symbols-outlined">
+                        cloud_sync
+                        </span>
+                        <p>The images are stored in the cloud, and you are provided with 2 GB of cloud storage for them.</p>
+                </div>
+                <div class="bottom_right_info_container">
+                    <span class="material-symbols-outlined">
+                        compare
+                        </span>
+                        <p>Our service guarantees the highest possible quality for your conversions.</p>
+                </div>
             </div>
         </div>
     </div>
