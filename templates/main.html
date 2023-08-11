@@ -31,23 +31,37 @@
                 <form action="/" method="POST" enctype="multipart/form-data">
                     <div class="drop_zone" id="drop_zone">
                         <input type="file" id="file" name="file" style="display: none">
-                        <label for="file"><i class="material-symbols-outlined">note_add
+                        <label id="file-label" for="file"><i class="material-symbols-outlined">note_add
                         </i><p class="arrow-down">Select File</p>
                         </label>
                         <div class="file_name_display" id="file_name_display"></div>
                         <div class="file_name_extention_display" id="file_name_extention_display" style="display: none;"></div>
                         <p class="text_to_text" id="text_to_text" style="display: none;">To</p>
-                        <select id="format_selector" name="format_selector" title="format_selector">
-                            <option value=".png">PNG</option>
-                            <option value=".jpeg">JPEG</option>
-                            <option value=".gif">GIF</option>
-                            <option value=".tiff">TIFF</option>
-                            <option value=".pdf">PDF</option>
-                            <option value=".heic">HEIC</option>
-                            <option value=".bmp">BMP</option>
-                            <option value=".svg">SVG</option>
-                            <option value=".ico">ICO</option>
-                        </select>
+                        <div class="custom-select" id="format_selector">
+                            <div class="selected-option">...</div>
+                            <ul class="options">
+                                <li data-value=".png">PNG</li>
+                                <li data-value=".jpeg">JPEG</li>
+                                <li data-value=".gif">GIF</li>
+                                <li data-value=".tiff">TIFF</li>
+                                <li data-value=".pdf">PDF</li>
+                                <li data-value=".heic">HEIC</li>
+                                <li data-value=".bmp">BMP</li>
+                                <li data-value=".svg">SVG</li>
+                                <li data-value=".ico">ICO</li>
+                            </ul>
+                            <select name="format_selector" id="format_hidden_select" style="display: none;">
+                                <option value=".png">PNG</option>
+                                <option value=".jpeg">JPEG</option>
+                                <option value=".gif">GIF</option>
+                                <option value=".tiff">TIFF</option>
+                                <option value=".pdf">PDF</option>
+                                <option value=".heic">HEIC</option>
+                                <option value=".bmp">BMP</option>
+                                <option value=".svg">SVG</option>
+                                <option value=".ico">ICO</option>
+                            </select>
+                        </div>
                         <button id="convert_image_btn" name="convert_image_btn" style="display: none;"></button>
                         <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;" ><i class="material-symbols-outlined">autorenew
                         </i><p>Convert</p>

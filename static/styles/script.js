@@ -1,4 +1,31 @@
-        
+    document.addEventListener('DOMContentLoaded', function() {
+        const label = document.querySelector('.file-label');
+
+        if (label) {
+            label.addEventListener('click', function() {
+                label.classList.toggle('clicked');
+            });
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const customSelect = document.getElementById('format_selector');
+        const selectedOption = customSelect.querySelector('.selected-option');
+        const optionsList = customSelect.querySelector('.options');
+        const hiddenSelect = customSelect.querySelector('#format_hidden_select');
+    
+        selectedOption.addEventListener('click', function() {
+            optionsList.style.display = optionsList.style.display === 'block' ? 'none' : 'block';
+        });
+    
+        optionsList.addEventListener('click', function(e) {
+            if (e.target.tagName === 'LI') {
+                const selectedValue = e.target.getAttribute('data-value');
+                selectedOption.textContent = e.target.textContent;
+                optionsList.style.display = 'none';
+                hiddenSelect.value = selectedValue;
+            }
+        });
+    });
         function updateLoadingBar(percentage) {
             const loadingBar = document.getElementById('loading_bar');
             loadingBar.style.width = `${percentage}%`;
