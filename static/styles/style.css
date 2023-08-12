@@ -186,21 +186,31 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     transition: background 0.3s ease, transform 0.3s;
 }
+
 .drop_zone label:last-of-type:hover,
 .drop_zone label:last-of-type:focus {
     transform: scale(1.05);
 }
+
 .drop_zone label:hover {
     background: #407275;
     cursor: pointer;
 }
-
 .drop_zone label i {
     display: flex;
     justify-content: center;
     width: 40px;
     font-size: 28px;
 }
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.rotating {
+    animation: rotate 2s linear infinite;
+}
+
 
 .drop_zone select {
     display: flex;
@@ -409,7 +419,7 @@ body {
 
 }
 
-.error_message{
+.error_message {
     display: flex;
     position: absolute;
     left: 50%;
@@ -425,19 +435,23 @@ body {
     align-content: center;
     border-radius: 5px;
 }
+
 @keyframes fadeOutAnimation {
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
         display: none;
     }
 }
+
 @keyframes fadeInAnimation {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }

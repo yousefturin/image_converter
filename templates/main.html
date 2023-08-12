@@ -70,14 +70,26 @@
                             </select>
                         </div>
                         <button id="convert_image_btn" name="convert_image_btn" style="display: none;"></button>
-                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;" ><i class="material-symbols-outlined">autorenew
-                        </i><p>Convert</p>
+                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;" onclick="toggleRotation()"> 
+                            <i class="material-symbols-outlined" id="rotation_tag" >
+                                autorenew
+                                </i>
+                            <p id="convert_text_tag">Convert</p>
                         </label>
                     </div>
                     <span id="cancel_button" class="material-symbols-outlined" style="display: none;">
                         cancel
                         </span>
                     </form> 
+                    <div class="download_sector">
+                        <button id="download_image_btn" name="download_image_btn" style="display: none;"></button>
+                        <label for="download_image_btn" id="download_image_btn_lable" style="display: none;"> 
+                            <i class="material-symbols-outlined">
+                                autorenew
+                                </i>
+                            <p id="download_text_tag">Download</p>
+                        </label>
+                    </div>
             </div>
         </div>
         <div class="info_container">

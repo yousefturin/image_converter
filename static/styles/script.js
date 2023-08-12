@@ -1,3 +1,17 @@
+function toggleRotation() {
+    const rotationTag = document.getElementById('rotation_tag');
+    rotationTag.classList.add('rotating');
+}
+function untoggleRotation() {
+    const rotationTag = document.getElementById('rotation_tag');
+    const convertImageBtnLable = document.getElementById('convert_image_btn_lable');
+    convertImageBtnLable.style.visibility = "hidden";
+    rotationTag.classList.remove('rotating');
+}
+
+
+
+
 $(document).ready(function() {
     // Store the selected file format
     var selectedFileFormat = null;
@@ -23,6 +37,11 @@ $(document).ready(function() {
     }
     $("#form_open").submit(function(e) {
         e.preventDefault();
+
+        
+        // Add rotating animation class
+        $("#rotating-icon").addClass("rotating-icon");
+
 
         var fileInput = $("#file")[0]; // Get the file input element
         var file = fileInput.files[0]; // Get the selected file
@@ -59,8 +78,7 @@ $(document).ready(function() {
             contentType: false,
             success: function(response) {
                 if (response.success) {
-                    alert("Success: " + response.success);
-                    // You can also perform additional actions like updating the page
+                    untoggleRotation();
                 }
             },
             error: function(xhr, status, error) {
@@ -157,7 +175,6 @@ function clearErrorMessage() {
             const formatSelector = document.getElementById('format_selector');
             const convertBtnLable = document.getElementById('convert_image_btn_lable');
             const textToText = document.getElementById('text_to_text');
-            
             const fileNameDisplay = document.getElementById('file_name_display');
 
             if (file) {
@@ -194,11 +211,9 @@ function clearErrorMessage() {
                 convertBtnLable.style.display = 'flex';
                 cancelBtn.style.display = 'flex';
                 textToText.style.display = 'flex';
-
                 const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
                 fileNameDisplay.textContent = `${fileNameWithoutExtension}`;
                 fileNameDisplay.style.display = 'flex';
-                
                 const fileExtension = file.name.split('.').pop();
                 fileNameExtentionDisplay.textContent = `${fileExtension}`;
                 fileNameExtentionDisplay.style.display = 'flex';
@@ -222,6 +237,7 @@ function clearErrorMessage() {
             textToText.style.display = 'none';
             cancelBtn.style.display = 'none';
             fileNameDisplay.style.display = 'none';
+            rotationTag.classList.remove('rotating');
             fileNameExtentionDisplay.style.display = 'none';
             dropZone.classList.remove('file-uploaded');
         });

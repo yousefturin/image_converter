@@ -1,8 +1,9 @@
 import os
+import time
 import cv2
 import numpy as np
 from PIL import Image
-from flask import Flask, render_template, redirect, request, flash
+from flask import Flask, render_template, redirect, request, flash, jsonify
 from werkzeug.utils import secure_filename
 import aspose.words as aw
 
@@ -58,7 +59,10 @@ def upload_image():
                 app.logger.info(f'{filename}')
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
                 conver_image(selected_format,filename)
-                return render_template('main.html',filename=filename)
+                time.sleep(3)
+                # Assuming the processing is done, send a response indicating success
+                response_data = {'success': True}
+                return jsonify(response_data), 200
             except:
                 raise ResourceNotFoundError("Image Resource could not be processed")                  
         else:
