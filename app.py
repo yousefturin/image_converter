@@ -46,33 +46,21 @@ def allowed_file(filename):
 
 @app.route('/upload_image',methods=['GET','POST'])
 def upload_image():
-    if request.method == 'POST':
-        file = request.files['file'] 
-
-        if 'file' not in request.files:
-            flash('No Image Part')
-            return redirect(request.url)
+    try:
+        if request.method == 'POST':
+            file = request.files['file']
+            selected_format = request.form['selected_format']
+            print(selected_format)
+            try:
+                filename = secure_filename(file.filename)
+                app.logger.info(f'{filename}')
+                file.save(os.path.join(UPLOAD_FOLDER, filename))
+                return render_template('main.html',filename=filename)
+            except:
+                raise ResourceNotFoundError("Image Resource could not be processed")                  
         else:
-            if file.filename == '':
-                flash('No Selected Image')
-                return redirect(request.url)
-            if file.filename != '':
-                if file and allowed_file(file.filename):
-                    try:
-                        filename = secure_filename(file.filename)
-                        app.logger.info(f'{filename}')
-                        file.save(os.path.join(UPLOAD_FOLDER, filename))
-                        return render_template('main.html',filename=filename)
-                    except:
-                        raise ResourceNotFoundError("Image Resource could not be processed")         
-                elif file.filename not in ALLOWED_EXTENSIONS :
-                    flash('Please Select a Valid Image Format \n ')
-                    return redirect(request.url)           
-                else:
-                    raise ResourceNotFoundError("Image Resource could not be retuned") 
-            else:
-                raise ResourceNotFoundError("Image Resource could not be retuned")  
-    else:
+            raise ResourceNotFoundError("Image Resource could not be retuned")
+    except:     
             return render_template('main.html')
 
 

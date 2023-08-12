@@ -1,22 +1,104 @@
-// JavaScript to check if the error message is empty and toggle visibility
-document.addEventListener("DOMContentLoaded", function () {
-    var errorMessage = document.querySelector('.error_message');
-    
-    // Check if the error message has any text content
-    if (errorMessage.textContent.trim() !== "") {
+$(document).ready(function() {
+    // Store the selected file format
+    var selectedFileFormat = null;
 
-        errorMessage.style.display = 'flex'; // Display the error message
-        errorMessage.style.animation = 'fadeInAnimation 0.8s forwards';
+    // Update the selected file format when a file is selected
+    $("#file").on("change", function() {
+        var fileExtension = getFileExtension(this.value);
+        selectedFileFormat = "." + fileExtension;
+        updateFormatSelector();
+    });
 
-        // After 5 seconds, hide the error message
-        setTimeout(function () {
-            errorMessage.style.animation = 'fadeOutAnimation 0.5s ease forwards';
-        }, 2000);
-    } else {
-        errorMessage.style.display = 'none'; // Hide the error message
+    // Update the format selector list
+    function updateFormatSelector() {
+        // Enable all options initially
+        $(".options li[data-value]").removeClass("disabled");
+        $(".options li[data-value]").show();
+
+        // Disable or hide the option matching the selected file format
+        if (selectedFileFormat) {
+            $(".options li[data-value='" + selectedFileFormat + "']").addClass("disabled");
+            $(".options li[data-value='" + selectedFileFormat + "']").hide();
+        }
     }
+    $("#form_open").submit(function(e) {
+        e.preventDefault();
+
+        var fileInput = $("#file")[0]; // Get the file input element
+        var file = fileInput.files[0]; // Get the selected file
+
+        if (!file) {
+            displayErrorMessage("Please select a file.");
+            return;
+        }
+
+        var fileExtension = getFileExtension(file.name);
+        if (!isValidFormat(fileExtension)) {
+            displayErrorMessage("Please select a valid image format.");
+            return;
+        }
+        var selectedFormat = $("#format_hidden_select").val();
+        if (selectedFormat === ".default" || selectedFormat === null) {
+            displayErrorMessage("Please select a valid format.");
+            return;
+        }
+        // Clear any previous error messages
+        clearErrorMessage();
+
+        var formData = new FormData(this);
+        formData.append("file", file);
+
+        var selectedFormat = $("#format_hidden_select").val();
+        formData.append("selected_format", selectedFormat);
+
+        $.ajax({
+            url: "/upload_image",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    alert("Success: " + response.success);
+                    // You can also perform additional actions like updating the page
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle the error if the request fails
+                console.error(error);
+            }
+        });
+    });
+    updateFormatSelector();
 });
 
+function getFileExtension(filename) {
+    var regex = /(?:\.([^.]+))?$/;
+    return regex.exec(filename)[1];
+}
+
+function isValidFormat(fileExtension) {
+    var allowedFormats = [".png", ".jpeg",".jpg", ".gif", ".tiff", ".pdf", ".heic", ".bmp", ".svg", ".ico"];
+    return allowedFormats.includes("." + fileExtension.toLowerCase());
+}
+function displayErrorMessage(message) {
+    var errorMessageContainer = $("#error_message");
+    errorMessageContainer.text(message);
+    errorMessageContainer.fadeIn(500, function() {
+        setTimeout(function() {
+            errorMessageContainer.fadeOut(500, function() {
+                errorMessageContainer.empty();
+            });
+        }, 2000); // Wait for 2 seconds before fading out
+    });
+}
+
+function clearErrorMessage() {
+    var errorMessageContainer = $("#error_message");
+    errorMessageContainer.fadeOut(500, function() {
+        errorMessageContainer.empty();
+    });
+}
     document.addEventListener('DOMContentLoaded', function() {
         const label = document.querySelector('.file-label');
 
@@ -143,6 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fileNameExtentionDisplay.style.display = 'none';
             dropZone.classList.remove('file-uploaded');
         });
+
 
 
 

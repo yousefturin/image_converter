@@ -17,6 +17,9 @@
         'opsz' 48
     }
         </style>
+                        <script 
+                        src="https://code.jquery.com/jquery-3.6.0.min.js">
+                </script>
 </head>
 <body>
     <div class="container">
@@ -28,17 +31,7 @@
         </div>
         <div class="bottom_container">
             <div class="wrap_bottom_container">
-                    <div class="error_message">
-                        <p>
-                            {% with messages = get_flashed_messages() %} {% if messages %}
-                        </p>
-                        <ul>
-                            {% for message in messages %}
-                            <a>{{message}}</a>
-                            {% endfor %}
-                        </ul>
-                        {% endif %} {% endwith %}
-                    </div>
+                    <div class="error_message" id="error_message" style="display: none;"></div>
                 <form action="/upload_image" method="POST" enctype="multipart/form-data" id="form_open">
                     <div class="drop_zone" id="drop_zone">
                         <input type="file" id="file" name="file" style="display: none">
@@ -53,6 +46,7 @@
                             <ul class="options">
                                 <li data-value=".png">PNG</li>
                                 <li data-value=".jpeg">JPEG</li>
+                                <li data-value=".jpg">JPG</li>
                                 <li data-value=".gif">GIF</li>
                                 <li data-value=".tiff">TIFF</li>
                                 <li data-value=".pdf">PDF</li>
@@ -62,8 +56,10 @@
                                 <li data-value=".ico">ICO</li>
                             </ul>
                             <select name="format_selector" id="format_hidden_select" style="display: none;">
+                                <option value=".default" disabled selected>Select Format</option>
                                 <option value=".png">PNG</option>
                                 <option value=".jpeg">JPEG</option>
+                                <option value=".jpg">JPG</option>
                                 <option value=".gif">GIF</option>
                                 <option value=".tiff">TIFF</option>
                                 <option value=".pdf">PDF</option>
@@ -74,14 +70,14 @@
                             </select>
                         </div>
                         <button id="convert_image_btn" name="convert_image_btn" style="display: none;"></button>
-                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;"><i class="material-symbols-outlined">autorenew
+                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;" ><i class="material-symbols-outlined">autorenew
                         </i><p>Convert</p>
                         </label>
                     </div>
                     <span id="cancel_button" class="material-symbols-outlined" style="display: none;">
                         cancel
                         </span>
-                    </form>  
+                    </form> 
             </div>
         </div>
         <div class="info_container">
