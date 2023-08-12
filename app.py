@@ -66,13 +66,19 @@ def upload_image():
             return render_template('main.html')
     
 def conver_image(selected_format,filename):
-    if selected_format == '.pdf':
-        print(filename)
-        original_path = os.path.join(UPLOAD_FOLDER, filename)
-        print(original_path)
-        pdf_path = os.path.join(CONVER_FOLDER, filename)
-        img_to_pdf = Image.open(original_path)
-        img_to_pdf.save(pdf_path, 'PDF', resolution=100.0, save_all=True)
+
+    print(filename)
+    ext_filename = os.path.splitext(filename)
+    # getting the fist part of the folder name
+    prefix = ext_filename[0]
+    # Add the new name and format to the image
+    filename_pdf = prefix + selected_format
+    original_path = os.path.join(UPLOAD_FOLDER, filename)
+    pdf_path = os.path.join(CONVER_FOLDER, filename_pdf)
+    print(pdf_path)
+    img_to_pdf = Image.open(original_path)
+    img_to_pdf.save(pdf_path,resolution=100.0)
+    return
 
 
 if __name__ == "__main__":
