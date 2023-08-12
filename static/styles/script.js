@@ -1,3 +1,22 @@
+// JavaScript to check if the error message is empty and toggle visibility
+document.addEventListener("DOMContentLoaded", function () {
+    var errorMessage = document.querySelector('.error_message');
+    
+    // Check if the error message has any text content
+    if (errorMessage.textContent.trim() !== "") {
+
+        errorMessage.style.display = 'flex'; // Display the error message
+        errorMessage.style.animation = 'fadeInAnimation 0.8s forwards';
+
+        // After 5 seconds, hide the error message
+        setTimeout(function () {
+            errorMessage.style.animation = 'fadeOutAnimation 0.5s ease forwards';
+        }, 2000);
+    } else {
+        errorMessage.style.display = 'none'; // Hide the error message
+    }
+});
+
     document.addEventListener('DOMContentLoaded', function() {
         const label = document.querySelector('.file-label');
 
@@ -124,3 +143,6 @@
             fileNameExtentionDisplay.style.display = 'none';
             dropZone.classList.remove('file-uploaded');
         });
+
+
+

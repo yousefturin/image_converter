@@ -16,7 +16,7 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = "teqi-Eest1-iold4"
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-UPLOAD_FOLDER ='C:/my_file/image_converter/static/uploads'
+
 
 class ResourceNotFoundError(Exception):
     pass
@@ -61,12 +61,12 @@ def upload_image():
                     try:
                         filename = secure_filename(file.filename)
                         app.logger.info(f'{filename}')
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        file.save(os.path.join(UPLOAD_FOLDER, filename))
                         return render_template('main.html',filename=filename)
                     except:
                         raise ResourceNotFoundError("Image Resource could not be processed")         
                 elif file.filename not in ALLOWED_EXTENSIONS :
-                    flash('Allowed image types are \n (png, jpg, jpeg, gif)')
+                    flash('Please Select a Valid Image Format \n ')
                     return redirect(request.url)           
                 else:
                     raise ResourceNotFoundError("Image Resource could not be retuned") 

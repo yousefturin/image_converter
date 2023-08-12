@@ -28,6 +28,17 @@
         </div>
         <div class="bottom_container">
             <div class="wrap_bottom_container">
+                    <div class="error_message">
+                        <p>
+                            {% with messages = get_flashed_messages() %} {% if messages %}
+                        </p>
+                        <ul>
+                            {% for message in messages %}
+                            <a>{{message}}</a>
+                            {% endfor %}
+                        </ul>
+                        {% endif %} {% endwith %}
+                    </div>
                 <form action="/upload_image" method="POST" enctype="multipart/form-data" id="form_open">
                     <div class="drop_zone" id="drop_zone">
                         <input type="file" id="file" name="file" style="display: none">
@@ -63,7 +74,7 @@
                             </select>
                         </div>
                         <button id="convert_image_btn" name="convert_image_btn" style="display: none;"></button>
-                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;" ><i class="material-symbols-outlined">autorenew
+                        <label for="convert_image_btn" id="convert_image_btn_lable" style="display: none;"><i class="material-symbols-outlined">autorenew
                         </i><p>Convert</p>
                         </label>
                     </div>
