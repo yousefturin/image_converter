@@ -76,6 +76,7 @@
             }
         });
 
+
         // New code to handle file input change event
         const fileInput = document.getElementById('file');
         const formatSelector = document.getElementById('format_selector');
@@ -83,13 +84,14 @@
         const fileNameDisplay = document.getElementById('file_name_display');
         const textToText = document.getElementById('text_to_text');
         const fileNameExtentionDisplay = document.getElementById('file_name_extention_display');
-
+        const cancelBtn = document.getElementById('cancel_button');
         fileInput.addEventListener('change', () => {
             const file = fileInput.files[0];
             if (file) {
                 dropZone.classList.add('file-uploaded');
                 formatSelector.style.display = 'flex';
                 convertBtnLable.style.display = 'flex';
+                cancelBtn.style.display = 'flex';
                 textToText.style.display = 'flex';
 
                 const fileNameWithoutExtension = file.name.replace(/\.[^/.]+$/, '');
@@ -104,8 +106,21 @@
                 formatSelector.style.display = 'none';
                 convertBtnLable.style.display = 'none';
                 textToText.style.display = 'none';
+                cancelBtn.style.display = 'none';
                 fileNameDisplay.style.display = 'none';
                 fileNameExtentionDisplay.style.display = 'none';
                 dropZone.querySelector('label').style.display = 'flex'; // Show the label
             }
+        });
+        cancelBtn.addEventListener('click', () => {
+            // Reset the file input and hide the cancel button
+            fileInput.value = '';
+            cancelBtn.style.display = 'none';
+            formatSelector.style.display = 'none';
+            convertBtnLable.style.display = 'none';
+            textToText.style.display = 'none';
+            cancelBtn.style.display = 'none';
+            fileNameDisplay.style.display = 'none';
+            fileNameExtentionDisplay.style.display = 'none';
+            dropZone.classList.remove('file-uploaded');
         });

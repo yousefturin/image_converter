@@ -9,26 +9,26 @@
     <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 1,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 48
-        }
+    .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+    }
         </style>
 </head>
 <body>
     <div class="container">
         <div class="top_container">
-            <img class="img" src="/static/images/c4793753acc24c0fb6c8a381da2e0841.png" alt="Image Converto">
+            <a href="/"><img class="img" src="/static/images/c4793753acc24c0fb6c8a381da2e0841.png" alt="Image Converto" ></a>
             <div class="wrap_top_container">
                 Image Converto
             </div>
         </div>
         <div class="bottom_container">
             <div class="wrap_bottom_container">
-                <form action="/" method="POST" enctype="multipart/form-data">
+                <form action="/upload_image" method="POST" enctype="multipart/form-data" id="form_open">
                     <div class="drop_zone" id="drop_zone">
                         <input type="file" id="file" name="file" style="display: none">
                         <label id="file-label" for="file"><i class="material-symbols-outlined">note_add
@@ -67,8 +67,10 @@
                         </i><p>Convert</p>
                         </label>
                     </div>
-                    </form>
-                    
+                    <span id="cancel_button" class="material-symbols-outlined" style="display: none;">
+                        cancel
+                        </span>
+                    </form>  
             </div>
         </div>
         <div class="info_container">
@@ -104,9 +106,8 @@
             src="{{url_for('static', filename='styles/script.js')}}">
         </script>
 </body>
-<footer class=" footer" > 
-    <p>© Copyrights YUSEFTURIN. All rights reserved <span id="current-year"></span></p>
-    <p>Türkiye | <a style="text-decoration:none;font-weight: bold;" href="mailto:yusefturin@gmail.com">contact@yusefturin.com</a></p>
-
-</footer>
+    <footer class=" footer" > 
+        <p>© Copyrights YUSEFTURIN. All rights reserved <span id="current-year"></span></p>
+            <p>Türkiye | <a style="text-decoration:none;font-weight: bold;" href="mailto:yusefturin@gmail.com">contact@yusefturin.com</a></p>
+    </footer>
 </html>
