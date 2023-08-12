@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from flask import Flask, render_template, redirect, request, flash
 from werkzeug.utils import secure_filename
+import aspose.words as aw
 
 
 from utils.PathSystem import *
@@ -66,18 +67,40 @@ def upload_image():
             return render_template('main.html')
     
 def conver_image(selected_format,filename):
-
-    print(filename)
     ext_filename = os.path.splitext(filename)
     # getting the fist part of the folder name
     prefix = ext_filename[0]
+    extention = ext_filename[1]
     # Add the new name and format to the image
     filename_pdf = prefix + selected_format
     original_path = os.path.join(UPLOAD_FOLDER, filename)
     pdf_path = os.path.join(CONVER_FOLDER, filename_pdf)
     print(pdf_path)
-    img_to_pdf = Image.open(original_path)
-    img_to_pdf.save(pdf_path,resolution=100.0)
+
+    if selected_format =='.pdf':
+        print(filename)
+        if extention =='.png':
+            filename_pdf_jpg = prefix + '.jpg'
+            pdf_jpg_path = os.path.join(CONVER_FOLDER, filename_pdf_jpg)
+            print(pdf_jpg_path)
+            img_to_jpg = Image.open(original_path)
+            img_to_jpg.save(pdf_jpg_path)
+            
+        img_to_pdf = Image.open(pdf_jpg_path)
+        img_to_pdf.save(pdf_path,resolution=100.0)
+
+    if selected_format =='.svg':
+        #  Create document object
+        doc = aw.Document()
+        # Create a document builder object
+        builder = aw.DocumentBuilder(doc)
+        # Load and insert PNG image
+        shape = builder.insert_image(original_path)
+        # Specify image save format as SVG
+        saveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
+        # Save image as SVG
+        shape.get_shape_renderer().save(pdf_path, saveOptions)
+
     return
 
 
