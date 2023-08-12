@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
         var selectedFormat = $("#format_hidden_select").val();
         if (selectedFormat === ".default" || selectedFormat === null) {
-            displayErrorMessage("Please select a valid format.");
+            displayErrorMessage("Please select a format.");
             return;
         }
         // Clear any previous error messages
