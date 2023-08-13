@@ -107,6 +107,12 @@ def conver_image(selected_format,filename):
 
     return
 
+@app.route('/download/<filename>', methods=['GET', 'POST'])
+def download_file(filename):
+    print("hi bithc", filename)
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True,host='0.0.0.0', port=5001)
