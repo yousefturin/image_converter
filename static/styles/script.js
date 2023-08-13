@@ -9,6 +9,11 @@ function untoggleRotation() {
     rotationTag.classList.remove('rotating');
 }
 
+function displayDownloadBtn(){
+    const downloadBtnLable = document.getElementById('download_sector_display');
+    downloadBtnLable.style.display = 'flex';
+}
+
 
 
 
@@ -79,6 +84,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     untoggleRotation();
+                    displayDownloadBtn();
                 }
             },
             error: function(xhr, status, error) {
@@ -174,6 +180,7 @@ function clearErrorMessage() {
             // New code to handle file upload and show/hide elements
             const formatSelector = document.getElementById('format_selector');
             const convertBtnLable = document.getElementById('convert_image_btn_lable');
+            const downloadBtnLable = document.getElementById('download_sector_display');
             const textToText = document.getElementById('text_to_text');
             const fileNameDisplay = document.getElementById('file_name_display');
 
@@ -184,10 +191,12 @@ function clearErrorMessage() {
                 textToText.style.display = 'flex';
                 fileNameDisplay.textContent = `Uploaded File: ${file.name}`;
                 fileNameDisplay.style.display = 'flex';
+                
             } else {
                 dropZone.classList.remove('file-uploaded');
                 formatSelector.style.display = 'none';
                 convertBtnLable.style.display = 'none';
+                downloadBtnLable.style.display = 'none';
                 textToText.style.display = 'none';
                 fileNameDisplay.style.display = 'none';
                 dropZone.querySelector('label').style.display = 'flex'; // Show the label
@@ -199,6 +208,7 @@ function clearErrorMessage() {
         const fileInput = document.getElementById('file');
         const formatSelector = document.getElementById('format_selector');
         const convertBtnLable = document.getElementById('convert_image_btn_lable');
+        const downloadBtnLable = document.getElementById('download_sector_display');
         const fileNameDisplay = document.getElementById('file_name_display');
         const textToText = document.getElementById('text_to_text');
         const fileNameExtentionDisplay = document.getElementById('file_name_extention_display');
@@ -221,6 +231,7 @@ function clearErrorMessage() {
                 dropZone.classList.remove('file-uploaded');
                 formatSelector.style.display = 'none';
                 convertBtnLable.style.display = 'none';
+                downloadBtnLable.style.display = 'none';
                 textToText.style.display = 'none';
                 cancelBtn.style.display = 'none';
                 fileNameDisplay.style.display = 'none';
@@ -234,6 +245,7 @@ function clearErrorMessage() {
             cancelBtn.style.display = 'none';
             formatSelector.style.display = 'none';
             convertBtnLable.style.display = 'none';
+            downloadBtnLable.style.display = 'none';
             textToText.style.display = 'none';
             cancelBtn.style.display = 'none';
             fileNameDisplay.style.display = 'none';

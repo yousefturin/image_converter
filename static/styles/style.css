@@ -5,6 +5,7 @@
     box-sizing: border-box;
     letter-spacing: 0.1px;
     user-select: none;
+    outline: 1px solid red;
 }
 
 html {
@@ -418,6 +419,58 @@ body {
     font-size: 12px;
 
 }
+.download_sector{
+    display: flex;
+    width: 100%;
+    height: 0;
+    border-radius: 5px;
+    flex-direction: row;
+    position: relative;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: flex-end;
+    align-items: center;
+    /* left: -188px; */
+    /* padding-right: 194px; */
+    bottom: 33px;
+}
+
+.download_sector label{
+    display: flex;
+    width: 161px;
+    height: 50px;
+    background: #51a5a7;
+    border-radius: 5px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    color: #cde2e1;
+    transition: background 0.3s ease, transform 0.3s;
+}
+.download_sector label i{
+    display: flex;
+    justify-content: center;
+    width: 40px;
+    font-size: 28px;
+}
+.download_sector label p{
+    display: flex;
+    width: 90px;
+    padding-top: 4px;
+    font-weight: bold;
+}
+.download_sector label:hover,
+.download_sector label:focus {
+    transform: scale(1.05);
+}
+
+.download_sector label:hover {
+    background: #407275;
+    cursor: pointer;
+}
+
 
 .error_message {
     display: flex;

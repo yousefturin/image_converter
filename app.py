@@ -60,7 +60,7 @@ def upload_image():
                 file.save(os.path.join(UPLOAD_FOLDER, filename))
                 conver_image(selected_format,filename)
                 time.sleep(3)
-                # Assuming the processing is done, send a response indicating success
+                # the processing is done, send a response indicating success
                 response_data = {'success': True}
                 return jsonify(response_data), 200
             except:
