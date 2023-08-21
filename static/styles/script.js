@@ -89,6 +89,7 @@ $(document).ready(function () {
                 if (response.success) {
                     untoggleRotation();
                     displayDownloadBtn();
+                    updateHiddenInputWithImageName();
                 }
             },
             error: function (xhr, status, error) {
@@ -260,6 +261,63 @@ cancelBtn.addEventListener('click', () => {
     dropZone.classList.remove('file-uploaded');
 });
 
+// get the filename from the "src" attribute of the "image-canvas" element on first
+// page load so the user if uploaded image and did nothing to it and presses download it will get the original image
+const fileName = document.getElementById("file");
+const formatSelectorType = document.getElementById("format_hidden_select");
 
 
+function updateHiddenInputWithImageName() {
+    const fileInput = document.getElementById("file");
+    const formatSelector = document.getElementById("format_hidden_select");
 
+    if (fileInput && fileInput.files.length > 0) {
+        const selectedFile = fileInput.files[0];
+        const imageNameWithExtension = selectedFile.name;
+        const extension = imageNameWithExtension.split('.').pop();
+        const imageNameWithoutExtension = imageNameWithExtension.replace('.' + extension, '');
+        const formatSelectorValue = formatSelector.value;
+        const fullFilename = imageNameWithoutExtension + formatSelectorValue;
+
+        console.log(fullFilename);
+
+        document.getElementById("image_name").value = fullFilename;
+    } else {
+        console.log("No file selected");
+    }
+}
+
+
+$(document).ready(function () {
+    $("#download_image_btn").click(function () {
+        var imageName = $("#image_name").val();
+        var downloadUrl = "/download/" + imageName;
+
+        $.ajax({
+            url: downloadUrl,
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    // Decode and download the base64-encoded PDF
+                    var binary = atob(response.data);
+                    var array = new Uint8Array(binary.length);
+                    for (var i = 0; i < binary.length; i++) {
+                        array[i] = binary.charCodeAt(i);
+                    }
+                    var blob = new Blob([array], { type: "application/pdf" });
+                    var url = window.URL.createObjectURL(blob);
+                    var link = document.createElement("a");
+                    link.href = url;
+                    link.download = imageName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error initiating download:", error);
+            }
+        });
+    });
+});

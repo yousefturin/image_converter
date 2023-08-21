@@ -1,9 +1,11 @@
 import os
 import time
+import base64
+
 import cv2
 import numpy as np
 from PIL import Image
-from flask import Flask, render_template, redirect, request, flash, jsonify
+from flask import Flask, render_template, redirect, request, flash, jsonify, send_file
 from werkzeug.utils import secure_filename
 import aspose.words as aw
 
@@ -80,19 +82,6 @@ def conver_image(selected_format,filename):
     original_path = os.path.join(UPLOAD_FOLDER, filename)
     pdf_path = os.path.join(CONVER_FOLDER, filename_pdf)
     print(pdf_path)
-
-    if selected_format =='.pdf':
-        print(filename)
-        if extention =='.png':
-            filename_pdf_jpg = prefix + '.jpg'
-            pdf_jpg_path = os.path.join(CONVER_FOLDER, filename_pdf_jpg)
-            print(pdf_jpg_path)
-            img_to_jpg = Image.open(original_path)
-            img_to_jpg.save(pdf_jpg_path)
-            
-        img_to_pdf = Image.open(pdf_jpg_path)
-        img_to_pdf.save(pdf_path,resolution=100.0)
-
     if selected_format =='.svg':
         #  Create document object
         doc = aw.Document()
@@ -104,14 +93,25 @@ def conver_image(selected_format,filename):
         saveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
         # Save image as SVG
         shape.get_shape_renderer().save(pdf_path, saveOptions)
+    else:
+        print(filename)
+        img_to_pdf = Image.open(original_path)
+        img_to_pdf.save(pdf_path,resolution=100.0)
 
     return
 
-@app.route('/download/<filename>', methods=['GET', 'POST'])
+@app.route('/download/<filename>', methods=['POST'])
 def download_file(filename):
-    print("hi bithc", filename)
-
-
+    data = request.json.get('image_name')
+    print("Received data:", data)
+    if data:
+        file_path = os.path.join(CONVER_FOLDER, data['name'])
+        with open(file_path, 'rb') as f:
+            pdf_data = f.read()
+        pdf_base64 = base64.b64encode(pdf_data).decode('utf-8')
+        return jsonify({"success": True, "data": pdf_base64})
+    else:
+        return jsonify({"error": "Image name not provided"}), 400
 
 
 if __name__ == "__main__":
