@@ -106,7 +106,7 @@ def download_file():
         try:
             _filename = request.json.get('image_name')
             if _filename:
-                _filename = secure_filename(_filename) 
+                _filename = secure_filename(_filename)  # Apply same filename sanitization
                 file_path = os.path.join(CONVER_FOLDER, _filename)
                 with open(file_path, 'rb') as f:
                     data = f.read()
