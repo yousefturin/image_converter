@@ -87,6 +87,7 @@ def upload_image():
     except:
         return render_template("main.html")
     
+    
 def ReRouterExtention(ProcessesExtention):
     if ProcessesExtention == 'SVG':
         AfterProcessesExtention = aw.SaveFormat.SVG
@@ -152,7 +153,7 @@ def HandlerImage(SelectedFormat, Filename):
     elif SelectedFormat == ".jpeg":
         # Specify image save format as GIF
         ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
-    # Works!
+
     elif SelectedFormat == ".jpg":
         raise InternalServerError(
             "The request can not be done at the moment please try again in a few moments"
