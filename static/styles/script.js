@@ -199,6 +199,8 @@ function clearErrorMessage() {
   });
 }
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
   updateHiddenInputWithImageName();
   const customSelect = document.getElementById("format_selector");

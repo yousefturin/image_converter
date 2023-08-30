@@ -75,7 +75,7 @@ def upload_image():
                 Filename = secure_filename(File.filename)
                 app.logger.info(f"{Filename}")
                 File.save(os.path.join(UPLOAD_FOLDER, Filename))
-                ConverImage(SelectedFormat, Filename)
+                HandlerImage(SelectedFormat, Filename)
                 time.sleep(3)
                 # the processing is done, send a response indicating success
                 ResponseData = {"success": True}
@@ -86,76 +86,92 @@ def upload_image():
             raise ResourceNotFoundError("Image Resource could not be retuned")
     except:
         return render_template("main.html")
+    
+def ReRouterExtention(ProcessesExtention):
+    if ProcessesExtention == 'SVG':
+        AfterProcessesExtention = aw.SaveFormat.SVG
+    if ProcessesExtention == 'TIFF':
+        AfterProcessesExtention = aw.SaveFormat.TIFF
+    if ProcessesExtention == 'BMP':
+        AfterProcessesExtention = aw.SaveFormat.BMP
+    if ProcessesExtention == 'JPEG':
+        AfterProcessesExtention = aw.SaveFormat.JPEG
+    if ProcessesExtention == 'GIF':
+        AfterProcessesExtention = aw.SaveFormat.GIF
+    if ProcessesExtention == 'PNG':
+        AfterProcessesExtention = aw.SaveFormat.PNG                                      
+    return AfterProcessesExtention
 
-
-def ConverImage(SelectedFormat, Filename):
-    PrefixExtentionSplit = os.path.splitext(Filename)
-    # getting the fist part of the folder name
-    Prefix = PrefixExtentionSplit[0]
-    Extention = PrefixExtentionSplit[1]
-    print(Extention)
-    # Add the new name and format to the image
-    FilenameImg = Prefix + SelectedFormat
-    OriginalPath = os.path.join(UPLOAD_FOLDER, Filename)
-    Path = os.path.join(CONVER_FOLDER, FilenameImg)
-    print(Path)
+def ExternalLibraryConverter(OriginalPath, Path, ProcessesExtention):
     #  Create document object
     Doc = aw.Document()
     # Create a document builder object
     Builder = aw.DocumentBuilder(Doc)
     # Load and insert PNG image
     Shape = Builder.insert_image(OriginalPath)
+    # Specify image save format as SVG
+    SaveFormat = ReRouterExtention(ProcessesExtention)
+    SaveOptions = aw.saving.ImageSaveOptions(SaveFormat)
+    # Save image as SVG
+    Shape.get_shape_renderer().save(Path, SaveOptions)
+    return
 
+
+def ExtentionSplitForExternalLibraryConverter(Extention):
+    if Extention.startswith("."):
+        Extention = Extention[1:]  # Remove the leading dot if present
+    UpperCaseExtention = Extention.upper()
+    return UpperCaseExtention
+
+
+def HandlerImage(SelectedFormat, Filename):
+    PrefixExtentionSplit = os.path.splitext(Filename)
+    # getting the fist part of the folder name
+    Prefix = PrefixExtentionSplit[0]
+    Extention = PrefixExtentionSplit[1]
+    ProcessesSelectedFormat = ExtentionSplitForExternalLibraryConverter(SelectedFormat)
+    print(ProcessesSelectedFormat)
+    # Add the new name and format to the image
+    FilenameImg = Prefix + SelectedFormat
+    OriginalPath = os.path.join(UPLOAD_FOLDER, Filename)
+    Path = os.path.join(CONVER_FOLDER, FilenameImg)
     # Works!
     if SelectedFormat == ".svg":
         if Extention == ".png" or ".jpg" or ".jpeg":
-            # Specify image save format as SVG
-            SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
-            # Save image as SVG
-            Shape.get_shape_renderer().save(Path, SaveOptions)
+            ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
         else:
             raise ResourceNotFoundError("Image Resource could not be retuned")
-
+    # Not working idk wtf is going on with it it was working
     elif SelectedFormat == ".pdf":
-        # Specify image save format as GIF
-        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.PDF)
-        # Save image as GIF
-        Shape.get_shape_renderer().save(Path, SaveOptions)
-
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+    # Works!
     elif SelectedFormat == ".png":
-        raise InternalServerError(
-            "The request can not be done at the moment please try again in a few moments"
-        )
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+
     # Works!
     elif SelectedFormat == ".jpeg":
         # Specify image save format as GIF
-        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.JPEG)
-        # Save image as GIF
-        Shape.get_shape_renderer().save(Path, SaveOptions)
-
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+    # Works!
     elif SelectedFormat == ".jpg":
         raise InternalServerError(
             "The request can not be done at the moment please try again in a few moments"
         )
     # Works!
     elif SelectedFormat == ".gif":
-        # Specify image save format as GIF
-        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.GIF)
-        # Save image as GIF
-        Shape.get_shape_renderer().save(Path, SaveOptions)
-
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+    # Works!
     elif SelectedFormat == ".tiff":
-        raise InternalServerError(
-            "The request can not be done at the moment please try again in a few moments"
-        )
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+
     elif SelectedFormat == ".heic":
         raise InternalServerError(
             "The request can not be done at the moment please try again in a few moments"
         )
+    # Works!
     elif SelectedFormat == ".bmp":
-        raise InternalServerError(
-            "The request can not be done at the moment please try again in a few moments"
-        )
+        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+
     elif SelectedFormat == ".ico":
         raise InternalServerError(
             "The request can not be done at the moment please try again in a few moments"
@@ -188,4 +204,4 @@ def download_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5001)
