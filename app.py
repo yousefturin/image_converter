@@ -105,7 +105,7 @@ def ConverImage(SelectedFormat, Filename):
     Builder = aw.DocumentBuilder(Doc)
     # Load and insert PNG image
     Shape = Builder.insert_image(OriginalPath)
-    
+
     # Works!
     if SelectedFormat == ".svg":
         if Extention == ".png" or ".jpg" or ".jpeg":
@@ -122,8 +122,9 @@ def ConverImage(SelectedFormat, Filename):
         ImgtoPDF.save(Path, resolution=100.0)
 
     elif SelectedFormat == ".png":
-        print(Filename)
-        
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
     # Works!
     elif SelectedFormat == ".jpeg":
         # Specify image save format as GIF
@@ -132,7 +133,9 @@ def ConverImage(SelectedFormat, Filename):
         Shape.get_shape_renderer().save(Path, SaveOptions)
 
     elif SelectedFormat == ".jpg":
-        print(Filename)
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
 
     elif SelectedFormat == ".gif":
         # Specify image save format as GIF
@@ -141,17 +144,21 @@ def ConverImage(SelectedFormat, Filename):
         Shape.get_shape_renderer().save(Path, SaveOptions)
 
     elif SelectedFormat == ".tiff":
-        print(Filename)
-
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
     elif SelectedFormat == ".heic":
-        print(Filename)
-
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
     elif SelectedFormat == ".bmp":
-        print(Filename)
-
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
     elif SelectedFormat == ".ico":
-        print(Filename)
-
+        raise InternalServerError(
+            "The request can not be done at the moment please try again in a few moments"
+        )
     else:
         raise ResourceNotFoundError(
             "Image Resource Format is incorrect to be Proccessed"
