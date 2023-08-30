@@ -34,7 +34,7 @@
                     <div class="error_message" id="error_message" style="display: none;"></div>
                 <form action="/upload_image" method="POST" enctype="multipart/form-data" id="form_open">
                     <div class="drop_zone" id="drop_zone">
-                        <input type="file" id="file" name="file" style="display: none">
+                        <input type="file" id="file" name="file" style="display: none" >
                         <label id="file-label" for="file"><i class="material-symbols-outlined">note_add
                         </i><p class="arrow-down">Select File</p>
                         </label>
@@ -42,7 +42,7 @@
                         <div class="file_name_extention_display" id="file_name_extention_display" style="display: none;"></div>
                         <p class="text_to_text" id="text_to_text" style="display: none;">To</p>
                         <div class="custom-select" id="format_selector">
-                            <div class="selected-option">...</div>
+                            <div class="selected-option" id="selected_option_dispaly" >...</div>
                             <ul class="options">
                                 <li data-value=".png">PNG</li>
                                 <li data-value=".jpeg">JPEG</li>

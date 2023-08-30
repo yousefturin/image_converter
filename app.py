@@ -117,9 +117,10 @@ def ConverImage(SelectedFormat, Filename):
             raise ResourceNotFoundError("Image Resource could not be retuned")
 
     elif SelectedFormat == ".pdf":
-        print(Filename)
-        ImgtoPDF = Image.open(OriginalPath)
-        ImgtoPDF.save(Path, resolution=100.0)
+        # Specify image save format as GIF
+        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.PDF)
+        # Save image as GIF
+        Shape.get_shape_renderer().save(Path, SaveOptions)
 
     elif SelectedFormat == ".png":
         raise InternalServerError(

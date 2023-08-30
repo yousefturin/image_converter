@@ -232,7 +232,7 @@ function updateLoadingBar(percentage) {
   loadingBar.style.width = `${percentage}%`;
 }
 
-// Your existing code for drag and drop events
+
 const dropZone = document.getElementById("drop_zone");
 
 dropZone.addEventListener("dragover", (event) => {
@@ -289,13 +289,19 @@ const convertBtnLable = document.getElementById("convert_image_btn_lable");
 const downloadBtnLable = document.getElementById("download_sector_display");
 const fileNameDisplay = document.getElementById("file_name_display");
 const textToText = document.getElementById("text_to_text");
-const fileNameExtentionDisplay = document.getElementById(
-  "file_name_extention_display"
-);
+const selectedOption = document.querySelector(".selected-option");
+const fileNameExtentionDisplay = document.getElementById("file_name_extention_display");
+const hiddenSelect = document.querySelector("#format_hidden_select");
 const cancelBtn = document.getElementById("cancel_button");
+let shouldHideButton = false;
+
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (file) {
+    if(shouldHideButton){
+      undisplayDownloadBtn();
+      displayConvertBtn();
+    }
     dropZone.classList.add("file-uploaded");
     formatSelector.style.display = "flex";
     convertBtnLable.style.display = "flex";
@@ -307,7 +313,9 @@ fileInput.addEventListener("change", () => {
     const fileExtension = file.name.split(".").pop();
     fileNameExtentionDisplay.textContent = `${fileExtension}`;
     fileNameExtentionDisplay.style.display = "flex";
+    shouldHideButton = true
   } else {
+
     dropZone.classList.remove("file-uploaded");
     formatSelector.style.display = "none";
     convertBtnLable.style.display = "none";
@@ -317,10 +325,13 @@ fileInput.addEventListener("change", () => {
     fileNameDisplay.style.display = "none";
     fileNameExtentionDisplay.style.display = "none";
     dropZone.querySelector("label").style.display = "flex"; // Show the label
+    selectedOption.innerHTML = "...";
+    hiddenSelect.value = ".default";
   }
 });
 cancelBtn.addEventListener("click", () => {
   // Reset the file input and hide the cancel button
+
   fileInput.value = "";
   cancelBtn.style.display = "none";
   formatSelector.style.display = "none";
@@ -331,8 +342,10 @@ cancelBtn.addEventListener("click", () => {
   fileNameDisplay.style.display = "none";
   fileNameExtentionDisplay.style.display = "none";
   dropZone.classList.remove("file-uploaded");
-});
+  selectedOption.innerHTML = "...";
+  hiddenSelect.value = ".default";
 
+});
 // get the filename from the "src" attribute of the "image-canvas" element on first
 // page load so the user if uploaded image and did nothing to it and presses download it will get the original image
 const fileName = document.getElementById("file");
