@@ -100,18 +100,23 @@ def conver_image(selected_format,filename):
 
     return
 
-@app.route('/download/<filename>', methods=['POST'])
-def download_file(filename):
-    data = request.json.get('image_name')
-    print("Received data:", data)
-    if data:
-        file_path = os.path.join(CONVER_FOLDER, data['name'])
-        with open(file_path, 'rb') as f:
-            pdf_data = f.read()
-        pdf_base64 = base64.b64encode(pdf_data).decode('utf-8')
-        return jsonify({"success": True, "data": pdf_base64})
-    else:
-        return jsonify({"error": "Image name not provided"}), 400
+@app.route('/download_file', methods=['POST'])
+def download_file():
+    if request.method == 'POST':
+        try:
+            _filename = request.json.get('image_name')
+            if _filename:
+                _filename = secure_filename(_filename) 
+                file_path = os.path.join(CONVER_FOLDER, _filename)
+                with open(file_path, 'rb') as f:
+                    data = f.read()
+                data = base64.b64encode(data).decode('utf-8')
+                return jsonify({"success": True, "data": data})
+            else:
+                return jsonify({"error": "Image name not provided"}), 400
+        except:
+            return jsonify({"error": "An error occurred"}), 500
+
 
 
 if __name__ == "__main__":

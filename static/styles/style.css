@@ -1,3 +1,6 @@
+:root{
+    --font-size-base:clamp(1rem,0.34vw + 0.91rem ,1.91rem)
+}
 * {
     margin: 0 !important;
     padding: 0;
@@ -417,7 +420,7 @@ body {
 }
 
 .wrap_info_container p {
-    font-size: 12px;
+    font-size: var(--font-size-base);
 
 }
 .download_sector{

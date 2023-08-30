@@ -81,7 +81,7 @@
                         cancel
                         </span>
                     </form> 
-                    <form id="downloadform" style="width: 100%;">
+                    <form action="{{ url_for('download_file') }}" method="POST"  id="downloadform" style="width: 100%;">
                     <div class="download_sector" id="download_sector_display" style="display: none;">
                         <input type="hidden" id="image_name" name="image_name"/>
                         <button id="download_image_btn" name="download_image_btn" style="display: none;"></button>
