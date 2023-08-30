@@ -93,46 +93,71 @@ def ConverImage(SelectedFormat, Filename):
     # getting the fist part of the folder name
     Prefix = PrefixExtentionSplit[0]
     Extention = PrefixExtentionSplit[1]
+    print(Extention)
     # Add the new name and format to the image
     FilenameImg = Prefix + SelectedFormat
     OriginalPath = os.path.join(UPLOAD_FOLDER, Filename)
     Path = os.path.join(CONVER_FOLDER, FilenameImg)
     print(Path)
+    #  Create document object
+    Doc = aw.Document()
+    # Create a document builder object
+    Builder = aw.DocumentBuilder(Doc)
+    # Load and insert PNG image
+    Shape = Builder.insert_image(OriginalPath)
+    
+    # Works!
     if SelectedFormat == ".svg":
-        #  Create document object
-        Doc = aw.Document()
-        # Create a document builder object
-        Builder = aw.DocumentBuilder(Doc)
-        # Load and insert PNG image
-        Shape = Builder.insert_image(OriginalPath)
-        # Specify image save format as SVG
-        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
-        # Save image as SVG
-        Shape.get_shape_renderer().save(Path, SaveOptions)
+        if Extention == ".png" or ".jpg" or ".jpeg":
+            # Specify image save format as SVG
+            SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
+            # Save image as SVG
+            Shape.get_shape_renderer().save(Path, SaveOptions)
+        else:
+            raise ResourceNotFoundError("Image Resource could not be retuned")
+
     elif SelectedFormat == ".pdf":
         print(Filename)
         ImgtoPDF = Image.open(OriginalPath)
         ImgtoPDF.save(Path, resolution=100.0)
+
     elif SelectedFormat == ".png":
         print(Filename)
+        
+    # Works!
     elif SelectedFormat == ".jpeg":
-        print(Filename)
+        # Specify image save format as GIF
+        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.JPEG)
+        # Save image as GIF
+        Shape.get_shape_renderer().save(Path, SaveOptions)
+
     elif SelectedFormat == ".jpg":
         print(Filename)
+
     elif SelectedFormat == ".gif":
-        print(Filename)
+        # Specify image save format as GIF
+        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.GIF)
+        # Save image as GIF
+        Shape.get_shape_renderer().save(Path, SaveOptions)
+
     elif SelectedFormat == ".tiff":
         print(Filename)
+
     elif SelectedFormat == ".heic":
         print(Filename)
+
     elif SelectedFormat == ".bmp":
         print(Filename)
+
     elif SelectedFormat == ".ico":
         print(Filename)
-        
+
     else:
-        raise ResourceNotFoundError("Image Resource Format is incorrect to be Proccessed")
+        raise ResourceNotFoundError(
+            "Image Resource Format is incorrect to be Proccessed"
+        )
     return
+
 
 @app.route("/download_file", methods=["POST"])
 def download_file():
