@@ -95,16 +95,31 @@ $(document).ready(function () {
       data: formData,
       processData: false,
       contentType: false,
+      timeout: 60000, // 1 minute in milliseconds
       success: function (response) {
         if (response.success) {
           untoggleRotation();
           displayDownloadBtn();
           updateHiddenInputWithImageName();
+        } else {
+          // Handle the case where the response is not successful
+          displayErrorMessage("Request was not successful");
+          untoggleRotation();
+          displayConvertBtn();
         }
       },
       error: function (xhr, status, error) {
-        // Handle the error if the request fails
-        console.error(error);
+        if (status === "timeout") {
+          // Handle the case where the request times out
+          displayErrorMessage("Request timed out");
+          untoggleRotation();
+          displayConvertBtn();
+        } else {
+          // Handle other types of errors
+          displayErrorMessage("Request failed: " + error);
+          untoggleRotation();
+          displayConvertBtn();
+        }
       },
     });
   });

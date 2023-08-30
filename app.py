@@ -136,7 +136,7 @@ def ConverImage(SelectedFormat, Filename):
         raise InternalServerError(
             "The request can not be done at the moment please try again in a few moments"
         )
-
+    # Works!
     elif SelectedFormat == ".gif":
         # Specify image save format as GIF
         SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.GIF)
@@ -187,4 +187,4 @@ def download_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    app.run(debug=False, host="0.0.0.0", port=5001)
