@@ -13,18 +13,29 @@ import aspose.words as aw
 from utils.PathSystem import *
 
 
-
-
-
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, static_url_path="/static")
 
 app.secret_key = "teqi-Eest1-iold4"
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(
+    [
+        ".png",
+        ".jpeg",
+        ".jpg",
+        ".gif",
+        ".tiff",
+        ".pdf",
+        ".heic",
+        ".bmp",
+        ".svg",
+        ".ico",
+    ]
+)
 
 
 class ResourceNotFoundError(Exception):
     pass
+
 
 class InternalServerError(Exception):
     pass
@@ -32,85 +43,93 @@ class InternalServerError(Exception):
 
 @app.errorhandler(ResourceNotFoundError)
 def handle_resource_not_found(e):
-    return render_template('error.html', error=e), 404
+    return render_template("error.html", error=e), 404
+
 
 @app.errorhandler(InternalServerError)
 def handle_internal_server_error(e):
-    return render_template('error.html', error=e), 500
+    return render_template("error.html", error=e), 500
 
-@app.route('/')
+
+@app.route("/")
 def home():
-        try:
-                return render_template('main.html')
-        except:
-                raise ResourceNotFoundError("Resource page not found")
-        
+    try:
+        return render_template("main.html")
+    except:
+        raise ResourceNotFoundError("Resource page not found")
+
+
 # checking if the file are under the allowed format
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/upload_image',methods=['GET','POST'])
+
+@app.route("/upload_image", methods=["GET", "POST"])
 def upload_image():
     try:
-        if request.method == 'POST':
-            file = request.files['file']
-            selected_format = request.form['selected_format']
-            print(selected_format)
+        if request.method == "POST":
+            File = request.files["file"]
+            SelectedFormat = request.form["selected_format"]
+            print(SelectedFormat)
             try:
-                filename = secure_filename(file.filename)
-                app.logger.info(f'{filename}')
-                file.save(os.path.join(UPLOAD_FOLDER, filename))
-                conver_image(selected_format,filename)
+                Filename = secure_filename(File.filename)
+                app.logger.info(f"{Filename}")
+                File.save(os.path.join(UPLOAD_FOLDER, Filename))
+                ConverImage(SelectedFormat, Filename)
                 time.sleep(3)
                 # the processing is done, send a response indicating success
-                response_data = {'success': True}
-                return jsonify(response_data), 200
+                ResponseData = {"success": True}
+                return jsonify(ResponseData), 200
             except:
-                raise ResourceNotFoundError("Image Resource could not be processed")                  
+                raise ResourceNotFoundError("Image Resource could not be processed")
         else:
             raise ResourceNotFoundError("Image Resource could not be retuned")
-    except:     
-            return render_template('main.html')
-    
-def conver_image(selected_format,filename):
-    ext_filename = os.path.splitext(filename)
+    except:
+        return render_template("main.html")
+
+
+def ConverImage(SelectedFormat, Filename):
+    PrefixExtentionSplit = os.path.splitext(Filename)
     # getting the fist part of the folder name
-    prefix = ext_filename[0]
-    extention = ext_filename[1]
+    Prefix = PrefixExtentionSplit[0]
+    Extention = PrefixExtentionSplit[1]
     # Add the new name and format to the image
-    filename_pdf = prefix + selected_format
-    original_path = os.path.join(UPLOAD_FOLDER, filename)
-    pdf_path = os.path.join(CONVER_FOLDER, filename_pdf)
-    print(pdf_path)
-    if selected_format =='.svg':
+    FilenameImg = Prefix + SelectedFormat
+    OriginalPath = os.path.join(UPLOAD_FOLDER, Filename)
+    Path = os.path.join(CONVER_FOLDER, FilenameImg)
+    print(Path)
+    if SelectedFormat == ".svg":
         #  Create document object
-        doc = aw.Document()
+        Doc = aw.Document()
         # Create a document builder object
-        builder = aw.DocumentBuilder(doc)
+        Builder = aw.DocumentBuilder(Doc)
         # Load and insert PNG image
-        shape = builder.insert_image(original_path)
+        Shape = Builder.insert_image(OriginalPath)
         # Specify image save format as SVG
-        saveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
+        SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
         # Save image as SVG
-        shape.get_shape_renderer().save(pdf_path, saveOptions)
+        Shape.get_shape_renderer().save(Path, SaveOptions)
     else:
-        print(filename)
-        img_to_pdf = Image.open(original_path)
-        img_to_pdf.save(pdf_path,resolution=100.0)
+        print(Filename)
+        ImgtoPDF = Image.open(OriginalPath)
+        ImgtoPDF.save(Path, resolution=100.0)
 
     return
 
-@app.route('/download_file', methods=['POST'])
+
+@app.route("/download_file", methods=["POST"])
 def download_file():
-    if request.method == 'POST':
+    if request.method == "POST":
         try:
-            _filename = request.json.get('image_name')
+            _filename = request.json.get("image_name")
             if _filename:
-                _filename = secure_filename(_filename)  # Apply same filename sanitization
+                _filename = secure_filename(
+                    _filename
+                )  # Apply same filename sanitization
                 file_path = os.path.join(CONVER_FOLDER, _filename)
-                with open(file_path, 'rb') as f:
+                with open(file_path, "rb") as f:
                     data = f.read()
-                data = base64.b64encode(data).decode('utf-8')
+                data = base64.b64encode(data).decode("utf-8")
                 return jsonify({"success": True, "data": data})
             else:
                 return jsonify({"error": "Image name not provided"}), 400
@@ -118,6 +137,5 @@ def download_file():
             return jsonify({"error": "An error occurred"}), 500
 
 
-
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0', port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5001)
