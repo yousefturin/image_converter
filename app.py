@@ -109,13 +109,30 @@ def ConverImage(SelectedFormat, Filename):
         SaveOptions = aw.saving.ImageSaveOptions(aw.SaveFormat.SVG)
         # Save image as SVG
         Shape.get_shape_renderer().save(Path, SaveOptions)
-    else:
+    elif SelectedFormat == ".pdf":
         print(Filename)
         ImgtoPDF = Image.open(OriginalPath)
         ImgtoPDF.save(Path, resolution=100.0)
-
+    elif SelectedFormat == ".png":
+        print(Filename)
+    elif SelectedFormat == ".jpeg":
+        print(Filename)
+    elif SelectedFormat == ".jpg":
+        print(Filename)
+    elif SelectedFormat == ".gif":
+        print(Filename)
+    elif SelectedFormat == ".tiff":
+        print(Filename)
+    elif SelectedFormat == ".heic":
+        print(Filename)
+    elif SelectedFormat == ".bmp":
+        print(Filename)
+    elif SelectedFormat == ".ico":
+        print(Filename)
+        
+    else:
+        raise ResourceNotFoundError("Image Resource Format is incorrect to be Proccessed")
     return
-
 
 @app.route("/download_file", methods=["POST"])
 def download_file():
