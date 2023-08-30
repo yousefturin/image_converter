@@ -1,5 +1,8 @@
 :root{
-    --font-size-base:clamp(1rem,0.34vw + 0.91rem ,1.91rem)
+    --font-size-xs: clamp(0.70rem,0.17vw + 0.56rem ,0.89rem);
+    --font-size-base:clamp(0.8rem,0.17vw + 0.76rem ,0.89rem);
+    --font-size-md:clamp(4.44rem, 3.54vw + 1.85rem ,6rem);
+    --font-size-lg:clamp(9.44rem, 5.54vw + 2.85rem ,12rem);
 }
 * {
     margin: 0 !important;
@@ -9,6 +12,28 @@
     letter-spacing: 0.1px;
     user-select: none;
 }
+@media (min-width: 1024px) {
+    .wrap_info_container span{
+        font-size: var(--font-size-lg) !important;
+    }
+    .wrap_info_container p{
+        font-size: var(--font-size-base) !important;
+    }
+    
+}
+@media (max-width: 767px) {
+    .wrap_info_container span{
+        font-size: var(--font-size-md) !important;
+    }
+    .wrap_info_container p{
+        font-size: var(--font-size-xs) !important;
+    }
+    .drop_zone label p {
+        font-size: var(--font-size-xs) !important;
+    } 
+    
+}
+
 
 html {
     scroll-behavior: smooth;
@@ -416,7 +441,7 @@ body {
 }
 
 .wrap_info_container span {
-    font-size: 140px;
+    font-size: var(--font-size-lg);
 }
 
 .wrap_info_container p {
