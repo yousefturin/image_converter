@@ -8,11 +8,14 @@ from PIL import Image
 from flask import Flask, render_template, redirect, request, flash, jsonify, send_file
 from werkzeug.utils import secure_filename
 import aspose.words as aw
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 
 from utils.PathSystem import *
 from utils.HandleImageExternal import *
 from utils.ValidationExtention import *
+from utils.HandleImagePDF import ConvertPNGToPDF
 
 
 app = Flask(__name__, static_url_path="/static")
@@ -69,16 +72,15 @@ def upload_image():
     except:
         return render_template("main.html")
     
-    
 
 
 
-def SendImageForRequestFormatCheck(SelectedFormat,Extention, OriginalPath,Path,ProcessesSelectedFormat):
+
+
+def SendImageForRequestFormatCheck(SelectedFormat, Extention, OriginalPath, Path, ProcessesSelectedFormat):
     '''Take a selected format and the extention and old path of teh joined image and the new path
     of the proccessed and takes the cleaned up format of the new image then checkes the 
     selected format to be then convered base on it and the old format of the image'''
-    
-    
     
     if SelectedFormat == ".svg":
         if Extention == ".png" or ".jpg" or ".jpeg":
@@ -87,7 +89,10 @@ def SendImageForRequestFormatCheck(SelectedFormat,Extention, OriginalPath,Path,P
             raise ResourceNotFoundError("Image Resource could not be retuned")
     # Not working idk wtf is going on with it it was working
     elif SelectedFormat == ".pdf":
-        ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
+        if Extention == ".png" or ".jpg" or ".jpeg":
+            ConvertPNGToPDF(OriginalPath, Path)
+        else:
+            raise ResourceNotFoundError("Image Resource could not be retuned")
     # Works!
     elif SelectedFormat == ".png":
         ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)

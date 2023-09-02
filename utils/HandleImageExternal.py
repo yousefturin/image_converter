@@ -25,7 +25,7 @@ def ReRouterExtention(ProcessesExtention):
         
     if ProcessesExtention == 'PNG':
         AfterProcessesExtention = aw.SaveFormat.PNG
-
+        
     return AfterProcessesExtention
 
 
