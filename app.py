@@ -13,9 +13,10 @@ from reportlab.pdfgen import canvas
 
 
 from utils.PathSystem import *
-from utils.HandleImageExternal import *
+from utils.Handler.HandleImageExternal import *
 from utils.ValidationExtention import *
-from utils.HandleImagePDF import ConvertPNGToPDF
+from utils.Handler.HandleImagePDF import ConvertPNGToPDF
+from utils.Handler.HandleImageICO import ConvertPNGToICO
 
 
 app = Flask(__name__, static_url_path="/static")
@@ -87,7 +88,7 @@ def SendImageForRequestFormatCheck(SelectedFormat, Extention, OriginalPath, Path
             ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
         else:
             raise ResourceNotFoundError("Image Resource could not be retuned")
-    # Not working idk wtf is going on with it it was working
+    # Works!
     elif SelectedFormat == ".pdf":
         if Extention == ".png" or ".jpg" or ".jpeg":
             ConvertPNGToPDF(OriginalPath, Path)
@@ -120,11 +121,10 @@ def SendImageForRequestFormatCheck(SelectedFormat, Extention, OriginalPath, Path
     # Works!
     elif SelectedFormat == ".bmp":
         ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
-
+        
+    # Works!, but the windows cant read the formatted file!
     elif SelectedFormat == ".ico":
-        raise InternalServerError(
-            "The request can not be done at the moment please try again in a few moments"
-        )
+        ConvertPNGToICO(OriginalPath, Path, ProcessesSelectedFormat)
     else:
         raise ResourceNotFoundError(
             "Image Resource Format is incorrect to be Proccessed"
