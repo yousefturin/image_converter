@@ -11,26 +11,13 @@ import aspose.words as aw
 
 
 from utils.PathSystem import *
+from utils.HandleImageExternal import *
+from utils.ValidationExtention import *
 
 
 app = Flask(__name__, static_url_path="/static")
 
 app.secret_key = "teqi-Eest1-iold4"
-
-ALLOWED_EXTENSIONS = set(
-    [
-        ".png",
-        ".jpeg",
-        ".jpg",
-        ".gif",
-        ".tiff",
-        ".pdf",
-        ".heic",
-        ".bmp",
-        ".svg",
-        ".ico",
-    ]
-)
 
 
 class ResourceNotFoundError(Exception):
@@ -59,18 +46,13 @@ def home():
         raise ResourceNotFoundError("Resource page not found")
 
 
-# checking if the file are under the allowed format
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 @app.route("/upload_image", methods=["GET", "POST"])
 def upload_image():
+    
     try:
         if request.method == "POST":
             File = request.files["file"]
             SelectedFormat = request.form["selected_format"]
-            print(SelectedFormat)
             try:
                 Filename = secure_filename(File.filename)
                 app.logger.info(f"{Filename}")
@@ -88,55 +70,16 @@ def upload_image():
         return render_template("main.html")
     
     
-def ReRouterExtention(ProcessesExtention):
-    if ProcessesExtention == 'SVG':
-        AfterProcessesExtention = aw.SaveFormat.SVG
-    if ProcessesExtention == 'TIFF':
-        AfterProcessesExtention = aw.SaveFormat.TIFF
-    if ProcessesExtention == 'BMP':
-        AfterProcessesExtention = aw.SaveFormat.BMP
-    if ProcessesExtention == 'JPEG':
-        AfterProcessesExtention = aw.SaveFormat.JPEG
-    if ProcessesExtention == 'GIF':
-        AfterProcessesExtention = aw.SaveFormat.GIF
-    if ProcessesExtention == 'PNG':
-        AfterProcessesExtention = aw.SaveFormat.PNG                                      
-    return AfterProcessesExtention
-
-def ExternalLibraryConverter(OriginalPath, Path, ProcessesExtention):
-    #  Create document object
-    Doc = aw.Document()
-    # Create a document builder object
-    Builder = aw.DocumentBuilder(Doc)
-    # Load and insert PNG image
-    Shape = Builder.insert_image(OriginalPath)
-    # Specify image save format as SVG
-    SaveFormat = ReRouterExtention(ProcessesExtention)
-    SaveOptions = aw.saving.ImageSaveOptions(SaveFormat)
-    # Save image as SVG
-    Shape.get_shape_renderer().save(Path, SaveOptions)
-    return
 
 
-def ExtentionSplitForExternalLibraryConverter(Extention):
-    if Extention.startswith("."):
-        Extention = Extention[1:]  # Remove the leading dot if present
-    UpperCaseExtention = Extention.upper()
-    return UpperCaseExtention
 
-
-def HandlerImage(SelectedFormat, Filename):
-    PrefixExtentionSplit = os.path.splitext(Filename)
-    # getting the fist part of the folder name
-    Prefix = PrefixExtentionSplit[0]
-    Extention = PrefixExtentionSplit[1]
-    ProcessesSelectedFormat = ExtentionSplitForExternalLibraryConverter(SelectedFormat)
-    print(ProcessesSelectedFormat)
-    # Add the new name and format to the image
-    FilenameImg = Prefix + SelectedFormat
-    OriginalPath = os.path.join(UPLOAD_FOLDER, Filename)
-    Path = os.path.join(CONVER_FOLDER, FilenameImg)
-    # Works!
+def SendImageForRequestFormatCheck(SelectedFormat,Extention, OriginalPath,Path,ProcessesSelectedFormat):
+    '''Take a selected format and the extention and old path of teh joined image and the new path
+    of the proccessed and takes the cleaned up format of the new image then checkes the 
+    selected format to be then convered base on it and the old format of the image'''
+    
+    
+    
     if SelectedFormat == ".svg":
         if Extention == ".png" or ".jpg" or ".jpeg":
             ExternalLibraryConverter(OriginalPath, Path, ProcessesSelectedFormat)
@@ -181,11 +124,29 @@ def HandlerImage(SelectedFormat, Filename):
         raise ResourceNotFoundError(
             "Image Resource Format is incorrect to be Proccessed"
         )
+        
+    return
+
+
+
+def HandlerImage(SelectedFormat, Filename):
+    
+    # Getting the fist part of the folder name.
+    Prefix, Extention  =  GetImageExtentions(Filename)
+    # Remove the # Remove the leading dot if present in SelectedFormat.
+    ProcessesSelectedFormat = ExtentionSplitForExternalLibraryConverter(SelectedFormat)
+    # Add the new name and format to the image.
+    OriginalPath, Path = AddNewNameAndFormatToImage(Filename, SelectedFormat,Prefix)
+    # Send the SelectedFormat and Extention and the OriginalPath, Path and the SelectedFormat
+    # after cleaning to be proccesed base on the SelectedFormat.
+    SendImageForRequestFormatCheck(SelectedFormat, Extention, OriginalPath, Path, ProcessesSelectedFormat)
+    
     return
 
 
 @app.route("/download_file", methods=["POST"])
 def download_file():
+    
     if request.method == "POST":
         try:
             _filename = request.json.get("image_name")
