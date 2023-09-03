@@ -8,6 +8,7 @@ def ReRouterExtention(ProcessesExtention):
     '''Take a file name Extention to be saved 
     in after processesd extention that is
     alloweded in a AW model'''
+    
     if ProcessesExtention == 'SVG':
         AfterProcessesExtention = aw.SaveFormat.SVG
         
@@ -31,7 +32,7 @@ def ReRouterExtention(ProcessesExtention):
 
 def ExternalLibraryConverter(OriginalPath, Path, ProcessesExtention):
     
-    #  Create document object
+    # Create document object
     Doc = aw.Document()
     # Create a document builder object
     Builder = aw.DocumentBuilder(Doc)
@@ -42,6 +43,7 @@ def ExternalLibraryConverter(OriginalPath, Path, ProcessesExtention):
     SaveOptions = aw.saving.ImageSaveOptions(SaveFormat)
     # Save image as SVG
     Shape.get_shape_renderer().save(Path, SaveOptions)
+    
     return
 
 
