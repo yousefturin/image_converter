@@ -360,15 +360,19 @@ function updateHiddenInputWithImageName() {
 
     if (fileInput && fileInput.files.length > 0) {
         const selectedFile = fileInput.files[0];
+        console.log("1",selectedFile);
         const imageNameWithExtension = selectedFile.name;
+        console.log("2",imageNameWithExtension);
         const imageNameWithoutExtension = imageNameWithExtension.replace(/\.[^/.]+$/, "");  // Remove extension
+        console.log("3",imageNameWithoutExtension);
         const formatSelectorValue = formatSelector.value;
+        console.log("4",formatSelectorValue);
         
         // Replace spaces with underscores while preserving consecutive spaces
         const processedFileName = imageNameWithoutExtension.replace(/ +/g, "_") + formatSelectorValue;
-
+        console.log("5",processedFileName);
         hiddenInput.value = processedFileName;  // Set the value of the hidden input
-        console.log(processedFileName);
+        console.log("6",processedFileName);
     } else {
         console.log("No file selected");
     }

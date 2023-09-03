@@ -2,14 +2,10 @@ import os
 import time
 import base64
 
-import cv2
-import numpy as np
-from PIL import Image
+
+
 from flask import Flask, render_template, redirect, request, flash, jsonify, send_file
 from werkzeug.utils import secure_filename
-import aspose.words as aw
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
 
 
 from utils.PathSystem import *
@@ -135,7 +131,6 @@ def SendImageForRequestFormatCheck(SelectedFormat, Extention, OriginalPath, Path
 
 
 def HandlerImage(SelectedFormat, Filename):
-    
     # Getting the fist part of the folder name.
     Prefix, Extention  =  GetImageExtentions(Filename)
     # Remove the # Remove the leading dot if present in SelectedFormat.
@@ -156,9 +151,7 @@ def download_file():
         try:
             _filename = request.json.get("image_name")
             if _filename:
-                _filename = secure_filename(
-                    _filename
-                )  # Apply same filename sanitization
+
                 file_path = os.path.join(CONVER_FOLDER, _filename)
                 with open(file_path, "rb") as f:
                     data = f.read()
@@ -171,4 +164,4 @@ def download_file():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5001)

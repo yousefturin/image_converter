@@ -52,7 +52,7 @@ def ExtentionSplitForExternalLibraryConverter(Extention):
     if Extention.startswith("."):
         Extention = Extention[1:]  # Remove the leading dot if present
     UpperCaseExtention = Extention.upper()
-    
+
     return UpperCaseExtention
 
 
@@ -60,6 +60,7 @@ def ExtentionSplitForExternalLibraryConverter(Extention):
 def GetImageExtentions(Filename):
     '''Take a file name and splits it
     not Prefix Extention to be returned'''
+
     PrefixExtentionSplit = os.path.splitext(Filename)
     # getting the fist part of the folder name
     Prefix = PrefixExtentionSplit[0]
